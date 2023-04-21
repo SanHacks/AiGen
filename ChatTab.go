@@ -1,9 +1,12 @@
 package main
 
 import (
+	"aigen/essentialsGen"
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"log"
 )
 
@@ -16,23 +19,38 @@ import (
 func ChatTab() (*fyne.Container, *container.TabItem) {
 	//Create the chat tab
 	chat := container.NewHBox()
+
+	bgImage := canvas.NewImageFromFile("icon.png")
+	bgImage.FillMode = canvas.ImageFillOriginal
+	// Create a container for the background image and other content
+	bgContainer := container.NewMax(bgImage)
+
+	bgContainer.Add(chat)
 	container.NewAdaptiveGrid(2, chat)
 	chat.Layout = layout.NewVBoxLayout()
-	aiGen := container.NewTabItem("AiGen-Chat", chat)
+	aiGen := container.NewTabItem("Sage Chat", chat)
+	aiGen.Icon = theme.HomeIcon()
 
 	messages1, err := getMessages()
 
 	if err != nil {
 		log.Printf("Error getting messages: %v", err)
 	}
-
+	//Loop Through Messages From DB and Display
 	for _, message := range messages1 {
 		if message.Sender == "YOU" {
 			addChatBubble(chat, message.Content, true)
 		} else {
-			addChatBubble(chat, message.Content, false)
+
+			if message.Media != "NULL" {
+				addMediaChatBubble(chat, message.Media, false)
+			} else {
+				addChatBubble(chat, message.Content, false)
+			}
 		}
 	}
-	startUpCall(chat) //This is a function that is called when the chat tab is opened
+
+	essentialsGen.StartUpCall(chat)
+
 	return chat, aiGen
 }

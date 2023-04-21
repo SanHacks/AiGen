@@ -3,5 +3,7 @@
 *.iml
 .env
 DigiCertGlobalRootCA.crt.pem
-identifier.sqlite
-Setup.go
+DB/identifier.sqlite
+!/ci/
+!/Azure/
+
