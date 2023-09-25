@@ -1,4 +1,4 @@
-package aigeUi
+package aigenUi
 
 import "fyne.io/fyne/v2"
 
@@ -24,7 +24,7 @@ func GoodBye(mapungubwe fyne.App) func() {
 	return func() {
 		mapungubwe.SendNotification(&fyne.Notification{
 			Title:   "Sage",
-			Content: "Thank you for using Sage Sage",
+			Content: "Thank you for using Sage",
 		})
 		mapungubwe.Quit()
 	}

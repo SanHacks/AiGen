@@ -6,17 +6,16 @@ require (
 	fyne.io/fyne/v2 v2.4.0
 	github.com/gen2brain/malgo v0.11.10
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/hajimehoshi/go-mp3 v0.3.3
+	github.com/hajimehoshi/go-mp3 v0.3.4
 	github.com/hegedustibor/htgo-tts v0.0.0-20220821045517-04f3cda7a12f
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/sashabaranov/go-openai v1.5.2
 	github.com/youpy/go-wav v0.3.2
-	github.com/zenwerk/go-wave v0.0.0-20190102022600-1be84bfef50c
+	github.com/zenwerk/go-wave v0.0.0-20230421164623-20cf3f50c337
 )
 
 require (
 	fyne.io/systray v1.10.1-0.20230722100817-88df1e0ffa9a // indirect
-	github.com/benoitkugler/textlayout v0.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -28,10 +27,9 @@ require (
 	github.com/go-text/render v0.0.0-20230619120952-35bccb6164b8 // indirect
 	github.com/go-text/typesetting v0.0.0-20230616162802-9c17dd34aa4a // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/goki/freetype v0.0.0-20220119013949-7a161fd3728c // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
-	github.com/hajimehoshi/oto/v2 v2.2.0 // indirect
+	github.com/hajimehoshi/oto/v2 v2.3.1 // indirect
 	github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/srwiley/oksvg v0.0.0-20221011165216-be6e8873101c // indirect
