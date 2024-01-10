@@ -3,7 +3,7 @@ package aigenRecorder
 import (
 	"fmt"
 	"github.com/gen2brain/malgo"
-	wave "github.com/zenwerk/go-wave"
+	"github.com/zenwerk/go-wave"
 	"log"
 	"os"
 	"time"
@@ -16,7 +16,7 @@ import (
 // PLEASE DO NOT TOUCH THIS! I HAD TO PERFORM MIRACLES TO MAKE THIS WORK.
 func VoiceRecorder() (string, error) {
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, func(message string) {
-		//fmt.Printf("LOG <%v>\n", message)
+		fmt.Printf("LOG <%v>\n", message)
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -45,7 +45,7 @@ func VoiceRecorder() (string, error) {
 		capturedSampleCount = newCapturedSampleCount
 	}
 
-	fmt.Println("Recording for 10 seconds...")
+	log.Println("Recording for 10 seconds...")
 	captureCallbacks := malgo.DeviceCallbacks{
 		Data: onRecvFrames,
 	}
@@ -87,7 +87,6 @@ func VoiceRecorder() (string, error) {
 	_, err = w.Write(pCapturedSamples)
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(0)
 	}
 
 	fmt.Println("Recording saved to", filePathName)

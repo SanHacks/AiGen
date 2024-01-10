@@ -10,7 +10,10 @@ const notificationSoundFile = "notification.mp3"
 
 func pressPlayAudio(messageCall string) (bool, string) {
 	//Azure Speech
-
+	//TODO:: Allow switching of speech providers to allow for easy management of resources in cases
+	//were Azure Speech starts to act real funny we can pull the plug real quick
+	//soundFileName, checkError := aigenRest.SpeakOut(messageCall)
+	//soundFileName, checkError := aigenRest.GCloudSpeakOUt(messageCall)
 	soundFileName, checkError := aigenRest.GptSpeakOut(messageCall)
 
 	if checkError == nil {
@@ -23,7 +26,6 @@ func pressPlayAudio(messageCall string) (bool, string) {
 	} else {
 		log.Println(checkError)
 	}
-
 	return true, soundFileName
 }
 
