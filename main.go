@@ -17,13 +17,14 @@ func main() {
 	//Run Setup Scripts
 	setup()
 	//Start Application
-	mapungubwe := app.New()
+	mapungubwe := app.NewWithID("com.sage.aigen")
 
+	// Set theme based on user preference (default to dark)
 	mapungubwe.Settings().SetTheme(theme.DarkTheme())
 	aigenUi.SwitchUp(mapungubwe)
 	playWelcomeSound()
 
-	tabs, inputBoxContainer := mainApp(mapungubwe)
+	mainContent, inputBoxContainer := mainApp(mapungubwe)
 	window := mapungubwe.NewWindow(aigenUi.MainTitle)
 	window.SetIcon(theme.MailAttachmentIcon())
 	window.SetFixedSize(false)
@@ -31,9 +32,16 @@ func main() {
 	window.CenterOnScreen()
 	window.Resize(aigenUi.WindowSize)
 	window.SetPadded(true)
-	scrollApp := container.NewScroll(tabs)
-
-	window.SetContent(container.NewBorder(nil, inputBoxContainer, nil, nil, scrollApp))
+	
+	// Border layout: main content with input at bottom
+	window.SetContent(container.NewBorder(
+		nil,
+		inputBoxContainer, // Input at bottom
+		nil,
+		nil,
+		mainContent, // Main content with sidebar
+	))
+	
 	window.ShowAndRun()
 	window.SetOnClosed(aigenUi.GoodBye(mapungubwe))
 }

@@ -25,6 +25,8 @@ func defaultCallConverseLogic(message string, tab1 *fyne.Container) {
 		messageCall, code = aigenRest.CallClaude(message)
 	case "Ollama":
 		messageCall, code = aigenRest.CallOllama(message)
+	case "Gemini":
+		messageCall, code = aigenRest.CallGemini(message)
 	}
 
 	if code != nil {

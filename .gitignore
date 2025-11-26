@@ -1,16 +1,21 @@
+# API Keys
+API_KEYS.txt
+.secrets
+config/
+*.db
+*.db-shm
+*.db-wal
 
-.idea
-*.iml
-.env
-DigiCertGlobalRootCA.crt.pem
-DB/identifier.sqlite
-!/ci/
-!/Azure/
-voicenotes
-source
-DB
-dalleAssets
-cache
-vendor
-fyne-cross
-Variables.go
+# Binary
+aigen
+
+# Test files
+test_*
+
+# Database
+DB/*.db
+DB/*.db-shm
+DB/*.db-wal
+
+# Build artifacts
+*.exe

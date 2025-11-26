@@ -33,6 +33,7 @@ func createMessagesDatabase() error {
 			content TEXT DEFAULT NULL,
 			audio TEXT DEFAULT NULL,
 			media  VARCHAR(255) DEFAULT 'NULL',
+			conversation_id TEXT DEFAULT 'default',
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)
 	`)

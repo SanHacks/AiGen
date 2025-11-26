@@ -74,7 +74,7 @@ func MultiModels() *widget.AccordionItem {
 	}
 
 	dualVoice := widget.NewAccordionItem(preselect,
-		widget.NewSelect([]string{"OpenAI", "Claude", "Ollama"}, func(value string) {
+		widget.NewSelect([]string{"OpenAI", "Claude", "Gemini", "Ollama"}, func(value string) {
 			log.Println("Select set to", value)
 			UpdateSelectedModel(value)
 		}))

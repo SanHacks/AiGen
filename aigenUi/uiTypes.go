@@ -1,6 +1,9 @@
 package aigenUi
 
-import "fyne.io/fyne/v2/canvas"
+import (
+	"fyne.io/fyne/v2/canvas"
+	"os"
+)
 
 type Tweet struct {
 	EditHistoryTweetIDs []string `json:"edit_history_tweet_ids"`
@@ -26,4 +29,5 @@ type facebookFeed struct {
 type ImageData struct {
 	Path  string
 	Image *canvas.Image
+	Info  os.FileInfo
 }

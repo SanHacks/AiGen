@@ -16,6 +16,8 @@ func setup() {
 		log.Printf("Error initializing database: %v", err)
 	}
 	MigrationAssist()
+	// Run database migrations after initialization
+	migrateDatabase()
 }
 
 // MigrationAssist Injects All required platform environment variables to environment in use for easy retrieval
@@ -46,6 +48,7 @@ func dbInit() error {
 	executeDBFunc(createKeyloggerDatabase)
 	executeDBFunc(createLLMSelectionDatabase)
 	executeDBFunc(createSpeechSelectionDatabase)
+	// Conversations database handled in conversationManager.go
 	return nil
 }
 

@@ -1,11 +1,10 @@
 package main
 
 import (
+	"aigen/aigenUi"
 	"aigen/essentialsGen"
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"log"
 )
@@ -17,18 +16,11 @@ import (
 // If the message is from the user, the bubble will be on the right side of the chat window
 // If the message is from the bot, the bubble will be on the left side of the chat window
 func ChatTab() (*fyne.Container, *container.TabItem) {
-	//Create the chat tab
-	chat := container.NewHBox()
+	//Create the chat tab - now with better layout for desktop
+	chat := container.NewVBox()
 	chat.Refresh()
 
-	bgImage := canvas.NewImageFromFile("Icon.png")
-	bgImage.FillMode = canvas.ImageFillOriginal
-	// Create a container for the background image and other content
-	bgContainer := container.NewMax(bgImage)
-
-	bgContainer.Add(chat)
-	container.NewAdaptiveGrid(2, chat)
-	chat.Layout = layout.NewVBoxLayout()
+	// Use a subtle background instead of an image for better readability
 	aiGen := container.NewTabItem("Sage Chat", chat)
 	aiGen.Icon = theme.HomeIcon()
 
@@ -37,16 +29,18 @@ func ChatTab() (*fyne.Container, *container.TabItem) {
 	if err != nil {
 		log.Printf("Error getting messages: %v", err)
 	}
-	//Loop Through Messages From DB and Display
+	
+	//Loop Through Messages From DB and Display with GIGACHAD COLORS
 	for _, message := range messagesFromDB {
 		if message.Sender == "YOU" {
-			addChatBubble(chat, message.Content, true)
+			aigenUi.AddGigachadBubble(chat, message.Content, true, "")
 		} else {
-
 			if message.Media != "NULL" {
 				addMediaChatBubble(chat, message.Media, false)
 			} else {
-				addChatBubble(chat, message.Content, false)
+				// Use last known model or default
+				model := "Gemini"
+				aigenUi.AddGigachadBubble(chat, message.Content, false, model)
 			}
 		}
 	}
