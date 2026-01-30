@@ -6,11 +6,12 @@ import (
 
 // Message represents a message in the chat
 type Message struct {
-	ID        int
-	Sender    string
-	Media     string
-	Content   string
-	CreatedAt time.Time
+	ID             int
+	Sender         string
+	Media          string
+	Content        string
+	ConversationID string
+	CreatedAt      time.Time
 }
 
 type User struct {

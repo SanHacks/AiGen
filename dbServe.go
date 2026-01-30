@@ -28,7 +28,7 @@ func getMessages() ([]Message, error) {
 	}(db)
 
 	// Execute a SQL query to retrieve all messages
-	rows, err := db.Query("SELECT id, sender, content, media, created_at FROM messages ORDER BY created_at")
+	rows, err := db.Query("SELECT id, sender, content, media, conversation_id, created_at FROM messages ORDER BY created_at")
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func getMessages() ([]Message, error) {
 	var messages []Message
 	for rows.Next() {
 		var m Message
-		if err := rows.Scan(&m.ID, &m.Sender, &m.Content, &m.Media, &m.CreatedAt); err != nil {
+		if err := rows.Scan(&m.ID, &m.Sender, &m.Content, &m.Media, &m.ConversationID, &m.CreatedAt); err != nil {
 			return nil, err
 		}
 		messages = append(messages, m)
@@ -68,7 +68,7 @@ func getLastMessages() ([]Message, error) {
 	}(db)
 
 	// Execute a SQL query to retrieve all messages
-	rows, getLastMessageDB := db.Query("SELECT id, sender, content, media, created_at FROM messages " +
+	rows, getLastMessageDB := db.Query("SELECT id, sender, content, media, conversation_id, created_at FROM messages " +
 		"WHERE media='Null' ORDER BY created_at LIMIT 5 ")
 	if getLastMessageDB != nil {
 		return nil, getLastMessageDB
@@ -84,7 +84,7 @@ func getLastMessages() ([]Message, error) {
 	var messages []Message
 	for rows.Next() {
 		var m Message
-		if err := rows.Scan(&m.ID, &m.Sender, &m.Content, &m.Media, &m.CreatedAt); err != nil {
+		if err := rows.Scan(&m.ID, &m.Sender, &m.Content, &m.Media, &m.ConversationID, &m.CreatedAt); err != nil {
 			return nil, err
 		}
 		messages = append(messages, m)
@@ -121,13 +121,16 @@ func getAudio(content string) (string, error) {
 	}(rows)
 
 	// Iterate over the result set and create a slice of Message structs
-	var audio string
+	var audio sql.NullString
 	for rows.Next() {
 		if err := rows.Scan(&audio); err != nil {
 			return "", err
 		}
 	}
-	return audio, nil
+	if audio.Valid {
+		return audio.String, nil
+	}
+	return "", nil
 }
 func getImageDB(content string) (string, error) {
 	db, err := sql.Open("sqlite3", MessagesDB)
@@ -199,7 +202,7 @@ func addMessage(sender string, content string) error {
 	}(db)
 
 	// Prepare a SQL statement to insert the message into the database
-	stmt, err := db.Prepare("INSERT INTO messages (sender, content) VALUES (?, ?)")
+	stmt, err := db.Prepare("INSERT INTO messages (sender, content, conversation_id) VALUES (?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -211,7 +214,7 @@ func addMessage(sender string, content string) error {
 	}(stmt)
 
 	// Execute the prepared statement with the message as parameters
-	_, err = stmt.Exec(sender, content)
+	_, err = stmt.Exec(sender, content, "default")
 	if err != nil {
 		return err
 	}
@@ -234,7 +237,7 @@ func addMessageWithMedia(sender string, content string, audio string, media stri
 	}(db)
 
 	// Prepare a SQL statement to insert the message into the database
-	stmt, err := db.Prepare("INSERT INTO messages (sender, content, audio, media) VALUES (?, ?, ?, ?)")
+	stmt, err := db.Prepare("INSERT INTO messages (sender, content, audio, media, conversation_id) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -246,7 +249,7 @@ func addMessageWithMedia(sender string, content string, audio string, media stri
 	}(stmt)
 
 	// Execute the prepared statement with the message as parameters
-	_, err = stmt.Exec(sender, content, audio, media)
+	_, err = stmt.Exec(sender, content, audio, media, "default")
 	if err != nil {
 		return err
 	}

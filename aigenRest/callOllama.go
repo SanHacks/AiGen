@@ -3,56 +3,78 @@ package aigenRest
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
+// CallOllama calls Ollama with better error handling
 func CallOllama(message string) (string, error) {
+	// Check if Ollama is running first
+	if !CheckOllamaRunning() {
+		return "", fmt.Errorf("Ollama is not running. Please start Ollama with: ollama serve")
+	}
 
+	// Try different models in order
+	models := []string{"llama2", "llama3", "mistral", "codellama", "gemma"}
+	
+	for _, model := range models {
+		response, err := tryOllamaModel(message, model)
+		if err == nil {
+			return response, nil
+		}
+		log.Printf("Model %s failed: %v", model, err)
+	}
+	
+	return "", fmt.Errorf("failed to connect to Ollama with any model")
+}
+
+// tryOllamaModel tries a specific model
+func tryOllamaModel(message, model string) (string, error) {
 	url := "http://localhost:11434/api/generate"
-	method := "POST"
-
-	payload := fmt.Sprintf(`{
-        "model": "ollama-2.1",
+	
+	payload := map[string]interface{}{
+		"model":  model,
 		"stream": false,
-        "prompt": "\n\nHuman: %s\n\nAssistant:"
-    }`, message)
+		"prompt": message,
+	}
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, strings.NewReader(payload))
+	jsonData, _ := json.Marshal(payload)
 
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+	
+	req, err := http.NewRequest("POST", url, strings.NewReader(string(jsonData)))
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 
-	req.Header.Add("content-type", "application/json")
+	req.Header.Add("Content-Type", "application/json")
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Println(err)
-		}
-	}(res.Body)
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("Ollama returned status: %d", res.StatusCode)
+	}
 
 	var response map[string]interface{}
-	err = json.NewDecoder(res.Body).Decode(&response)
-	if err != nil {
-		fmt.Println(err)
+	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return "", err
 	}
 
-	completion, ok := response["completion"].(string)
-	if !ok {
-		return "", fmt.Errorf("completion not found in response")
+	// Try to get response
+	if completion, ok := response["response"].(string); ok {
+		return completion, nil
+	}
+	if completion, ok := response["completion"].(string); ok {
+		return completion, nil
 	}
 
-	return completion, nil
+	return "", fmt.Errorf("no completion found in response")
 }
