@@ -1,13 +1,12 @@
 module aigen
 
-go 1.23.0
-
-toolchain go1.24.2
+go 1.25.0
 
 require (
 	fyne.io/fyne/v2 v2.4.5
 	github.com/atotto/clipboard v0.1.4
 	github.com/gen2brain/malgo v0.11.10
+	github.com/go-rod/rod v0.116.2
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/hajimehoshi/go-mp3 v0.3.4
 	github.com/mattn/go-sqlite3 v1.14.16
@@ -26,7 +25,6 @@ require (
 	github.com/fyne-io/image v0.0.0-20230811065323-ed435dc8bca6 // indirect
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20240306074159-ea2d69986ecb // indirect
-	github.com/go-rod/rod v0.116.2 // indirect
 	github.com/go-text/render v0.1.0 // indirect
 	github.com/go-text/typesetting v0.1.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
@@ -46,11 +44,11 @@ require (
 	github.com/ysmood/leakless v0.9.0 // indirect
 	github.com/yuin/goldmark v1.5.5 // indirect
 	github.com/zaf/g711 v0.0.0-20190814101024-76a4a538f52b // indirect
-	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/image v0.41.0 // indirect
 	golang.org/x/mobile v0.0.0-20230531173138-3c911d8e3eda // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2 // indirect
 )
